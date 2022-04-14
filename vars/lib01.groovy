@@ -26,7 +26,7 @@ def call(body) {
                         sh """
                         docker login ${DockerRepositoryAddress} -u $DOCKER_USER -p $DOCKER_PASSWORD
                         docker build -t ${DOCKER_USER}/${pipelineParams.projectName}:${release_number} ./app/
-                        docker push  -t ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
+                        docker push     ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
                         """
                     }
                 }
