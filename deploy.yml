@@ -11,9 +11,8 @@
       dest: backend-service.hcl
 
   - name: Start Job
-    community.general.nomad_job:
-      host: "{{ nomad_address }}"
-      state: present
-      content: "{{ lookup('ansible.builtin.file', 'backend-service.hcl') }}"
-      timeout: 120
-      use_ssl: no
+    shell:
+      chdir: /mnt
+      cmd: "/usr/bin/levant deploy backend-service.hcl"
+    environment:
+        NOMAD_ADDR: "{{ nomad_url }}"

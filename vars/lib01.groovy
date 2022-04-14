@@ -38,19 +38,15 @@ def call(body) {
                 jenkinsAgentRunArgs = " -u 0:0 -v ${jenkinsAgentDockerfilePath}:/mnt"
 
                 def RunAgent = docker.build("${jenkinsAgentBuildName}", "${jenkinsAgentBuildArgs} -f ${jenkinsAgentDockerfileName} .")
-                NomadHostIP = '192.168.0.112'
+                Nomad_URL = 'http://192.168.0.112:4646'
 
                 stage('Deploy to Nomad') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                         RunAgent.inside("${jenkinsAgentRunArgs}") {
-                            sh "pwd"
-                            sh "ls -la"
-                            sh "ls -la .. "
-                            
                             sh """
                             cd /mnt && \
                             ansible-playbook deploy.yml \
-                            -e 'nomad_address= ${NomadHostIP}' \
+                            -e 'nomad_url= ${Nomad_URL}' \
                             -e 'service_name=  ${pipelineParams.projectName}' \
                             -e 'service_image= ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}'
                             """
