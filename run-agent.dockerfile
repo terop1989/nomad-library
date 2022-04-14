@@ -28,7 +28,7 @@ RUN pip3 install \
         pexpect \
         git-archive-all
 # Levant
-ADD levant_${LEVANT_VERSION}_linux_amd64.zip /tmp/levant_${LEVANT_VERSION}_linux_amd64.zip
+ADD /mnt/levant_${LEVANT_VERSION}_linux_amd64.zip /tmp/levant_${LEVANT_VERSION}_linux_amd64.zip
 
 RUN cd /tmp \
     && unzip levant_${LEVANT_VERSION}_linux_amd64.zip \
