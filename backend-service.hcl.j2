@@ -12,17 +12,8 @@ job "backend-service" {
         image = "{{ service_image }}"
       }
 
-      resources {
-        network {
-          port "http-backend" {
-            static = 5000
-          }
-        }
-      }
-
       service {
         name = "backend-{{ service_name }}"
-        port = "http-backend"
 
         tags = [
           "backend"
