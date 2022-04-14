@@ -19,12 +19,15 @@ def call(body) {
             if (env.TAG_NAME ==~ /\d+\.\d+\.\d+-release/) {
                 release_number = env.TAG_NAME.split('-')[0]
                 println ("Release Number = " + release_number)
-                sh "ls -la"
-                dockerhub_account = "terop1989"
+
+                DockerRepositoryAddress='docker.io'
                 stage('Docker Build') {
-                    docker.withRegistry('', 'dockerhub') {
-                        def service_image = docker.build("${dockerhub_account}/${pipelineParams.projectName}:${release_number}", " ./app/")
-                        service_image.push()
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        sh """
+                        docker login ${DockerRepositoryAddress} -u $DOCKER_USER -p $DOCKER_PASSWORD
+                        docker build -t ${DockerRepositoryAddress}:${DOCKER_USER}/${pipelineParams.projectName}:${release_number} ./app/
+                        docker push  -t ${DockerRepositoryAddress}:${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
+                        """
                     }
                 }
             }
