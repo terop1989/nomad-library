@@ -42,10 +42,11 @@ def call(body) {
                 stage('Deploy to Nomad') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                         RunAgent.inside("${jenkinsAgentRunArgs}") {
+                            sh "pwd"
+                            sh "ls -la"
+                            sh "ls -la .. "
+                            
                             sh """
-                            pwd \
-                            ls -la \
-                            ls -la .. \
                             ansible-playbook deploy.yml \
                             -e 'nomad_address= ${NomadHostIP}' \
                             -e 'service_name=  ${pipelineParams.projectName}' \
