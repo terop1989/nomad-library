@@ -31,10 +31,10 @@ def call(body) {
                     }
                 }
 
-                jenkinsAgentDockerfileName = 'run-agent.dockerfile'
+                jenkinsAgentDockerfileName = "${env.WORKSPACE}" + "@libs/" + "${pipelineParams.ext_lib_name}" + "/run-agent.dockerfile"
                 jenkinsAgentBuildName = 'run-agent:latest'
                 jenkinsAgentBuildArgs = ''
-                jenkinsAgentRunArgs = " -u 0:0"
+
                 def RunAgent = docker.build("${jenkinsAgentBuildName}", "${jenkinsAgentBuildArgs} -f ${jenkinsAgentDockerfileName} .")
                 NomadHostIP = '192.168.0.112'
 
