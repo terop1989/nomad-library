@@ -25,8 +25,8 @@ def call(body) {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                         sh """
                         docker login ${DockerRepositoryAddress} -u $DOCKER_USER -p $DOCKER_PASSWORD
-                        docker build -t ${DockerRepositoryAddress}:${DOCKER_USER}/${pipelineParams.projectName}:${release_number} -f ./app/
-                        docker push  -t ${DockerRepositoryAddress}:${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
+                        docker build -t ${DOCKER_USER}/${pipelineParams.projectName}:${release_number} -f ./app/
+                        docker push  -t ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
                         """
                     }
                 }
