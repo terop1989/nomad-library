@@ -19,6 +19,7 @@ def call(body) {
             if (env.TAG_NAME ==~ /\d+\.\d+\.\d+-release/) {
                 release_number = env.TAG_NAME.split('-')[0]
                 println ("Release Number = " + release_number)
+                sh "ls -la"
             }
 
             stage('Cleanup') {
