@@ -30,6 +30,26 @@ def call(body) {
                         """
                     }
                 }
+
+                jenkinsAgentDockerfileName = 'run-agent.dockerfile'
+                jenkinsAgentBuildName = 'run-agent:latest'
+                jenkinsAgentBuildArgs = ''
+                jenkinsAgentRunArgs = " -u 0:0"
+                def RunAgent = docker.build("${jenkinsAgentBuildName}", "${jenkinsAgentBuildArgs} -f ${jenkinsAgentDockerfileName} .")
+                NomadHostIP = '192.168.0.112'
+
+                stage('Deploy to Nomad') {
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        RunAgent.inside("${jenkinsAgentRunArgs}") {
+                            sh """
+                            ansible-playbook deploy.yml \
+                            -e 'nomad_address= ${NomadHostIP}' \
+                            -e 'service_name=  ${pipelineParams.projectName}' \
+                            -e 'service_image= ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}'
+                            """
+                        }
+                    }
+                }
             }
 
             stage('Cleanup') {
