@@ -40,7 +40,7 @@ def call(body) {
 
                 stage('Deploy to Nomad') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        RunAgent.inside("${jenkinsAgentRunArgs}") {
+                        RunAgent.inside() {
                             sh """
                             ansible-playbook deploy.yml \
                             -e 'nomad_address= ${NomadHostIP}' \
