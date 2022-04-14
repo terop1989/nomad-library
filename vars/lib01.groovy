@@ -44,6 +44,11 @@ def call(body) {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
                         RunAgent.inside("${jenkinsAgentRunArgs}") {
                             sh """
+                            cp /mnt/levant_0.3.0_linux_amd64.zip /tmp && \
+                            unzip levant_0.3.0_linux_amd64.zip && \
+                            mv levant /usr/bin/ && \
+                            chmod 755 /usr/bin/levant && \
+                            rm -f levant_0.3.0_linux_amd64.zip && \
                             cd /mnt && \
                             ansible-playbook deploy.yml \
                             -e 'nomad_url= ${Nomad_URL}' \

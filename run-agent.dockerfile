@@ -27,14 +27,6 @@ RUN pip3 install \
         python-jenkins \
         pexpect \
         git-archive-all
-# Levant
-ADD /mnt/levant_${LEVANT_VERSION}_linux_amd64.zip /tmp/levant_${LEVANT_VERSION}_linux_amd64.zip
-
-RUN cd /tmp \
-    && unzip levant_${LEVANT_VERSION}_linux_amd64.zip \
-    && mv levant /usr/bin/ \
-    && chmod 755 /usr/bin/levant \
-    && rm -f levant_${LEVANT_VERSION}_linux_amd64.zip
 ##
 ENTRYPOINT []
 CMD tail -f /dev/null
