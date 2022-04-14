@@ -31,7 +31,8 @@ def call(body) {
                     }
                 }
 
-                jenkinsAgentDockerfileName = "${env.WORKSPACE}" + "@libs/" + "${pipelineParams.ext_lib_name}" + "/run-agent.dockerfile"
+                jenkinsAgentDockerfilePath = "${env.WORKSPACE}" + "@libs/" + "${pipelineParams.ext_lib_name}"
+                jenkinsAgentDockerfileName = "${jenkinsAgentDockerfilePath}" + "/run-agent.dockerfile"
                 jenkinsAgentBuildName = 'run-agent:latest'
                 jenkinsAgentBuildArgs = ''
                 jenkinsAgentRunArgs = " -u 0:0"
@@ -47,6 +48,7 @@ def call(body) {
                             sh "ls -la .. "
                             
                             sh """
+                            cd ${jenkinsAgentDockerfilePath} \
                             ansible-playbook deploy.yml \
                             -e 'nomad_address= ${NomadHostIP}' \
                             -e 'service_name=  ${pipelineParams.projectName}' \
