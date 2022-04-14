@@ -21,7 +21,7 @@ def call(body) {
                 println ("Release Number = " + release_number)
                 sh "ls -la"
                 stage('Docker Build') {
-                    docker.withRegistry('https://hub.docker.com', 'dockerhub') {
+                    docker.withRegistry('', 'dockerhub') {
                         def service_image = docker.build("${pipelineParams.projectName}:${release_number}", " ./app/")
                         service_image.push()
                     }
