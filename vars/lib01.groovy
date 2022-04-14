@@ -45,6 +45,7 @@ def call(body) {
                         RunAgent.inside("${jenkinsAgentRunArgs}") {
                             sh """
                             cp /mnt/levant_0.3.0_linux_amd64.zip /tmp && \
+                            cd /tmp && \
                             unzip levant_0.3.0_linux_amd64.zip && \
                             mv levant /usr/bin/ && \
                             chmod 755 /usr/bin/levant && \
