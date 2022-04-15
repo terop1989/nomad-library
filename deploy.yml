@@ -11,7 +11,7 @@
 
   - name: Print service_name
     debug:
-      var: service_name
+      var: "{{ service_name }}"
 
   - name: Print service_image
     debug:
