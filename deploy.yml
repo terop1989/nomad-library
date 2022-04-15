@@ -5,26 +5,15 @@
 
   tasks:
 
-  - name: Print nomad_url
-    debug:
-      var: nomad_url
-
-  - name: Print service_name
-    debug:
-      var: "{{ service_name }}"
-
-  - name: Print service_image
-    debug:
-      var: service_image
-
   - name: Create Job Manifest
     template:
       src:  backend-service.hcl.j2
       dest: backend-service.hcl
 
   - name: Start Job
-    shell:
-      chdir: /mnt
-      cmd: "/usr/bin/levant deploy backend-service.hcl"
-    environment:
-        NOMAD_ADDR: "{{ nomad_url }}"
+    community.general.nomad_job:
+      host: "{{ nomad_address }}"
+      state: present
+      content: "{{ lookup('ansible.builtin.file', 'backend-service.hcl') }}"
+      timeout: 120
+      use_ssl: no

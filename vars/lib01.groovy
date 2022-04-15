@@ -38,7 +38,7 @@ def call(body) {
                 jenkinsAgentRunArgs = " -u 0:0 -v ${jenkinsAgentDockerfilePath}:/mnt"
 
                 def RunAgent = docker.build("${jenkinsAgentBuildName}", "${jenkinsAgentBuildArgs} -f ${jenkinsAgentDockerfileName} .")
-                Nomad_URL = 'http://192.168.0.112:4646'
+                Nomad_Address = '192.168.0.112'
 
                 stage('Deploy to Nomad') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -52,7 +52,7 @@ def call(body) {
                             rm -f levant_0.3.0_linux_amd64.zip && \
                             cd /mnt && \
                             ansible-playbook deploy.yml \
-                            -e nomad_url=${Nomad_URL} \
+                            -e nomad_address=${Nomad_Address} \
                             -e service_name=${pipelineParams.projectName} \
                             -e service_image=${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
                             """
