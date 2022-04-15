@@ -26,7 +26,8 @@ RUN pip3 install \
         natsort \
         python-jenkins \
         pexpect \
-        git-archive-all
+        git-archive-all \
+        python-nomad
 ##
 ENTRYPOINT []
 CMD tail -f /dev/null
