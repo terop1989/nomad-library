@@ -1,7 +1,6 @@
 FROM ubuntu:focal
 #
-ARG ANSIBLE_VERSION=2.9.13
-ARG LEVANT_VERSION=0.3.0
+ARG VERSION=2.9.24
 #
 RUN apt-get update \
         && apt-get install -y --no-install-recommends \
@@ -9,25 +8,23 @@ RUN apt-get update \
         openssh-client \
         sshpass \
         git \
-        wget \
-        unzip \
         && rm -rf /var/lib/apt/lists/*
-# Ansible
+# For Ansible
 RUN pip3 install \
         setuptools \
         wheel \
         lxml
-RUN pip3 install ansible==${ANSIBLE_VERSION}
-# Changelog
+RUN pip3 install ansible==${VERSION}
+# For Changelog
 RUN pip3 install \
         GitPython \
         atlassian-python-api \
         jinja2 \
         natsort \
         python-jenkins \
-        pexpect \
-        git-archive-all \
         python-nomad
-##
+
+RUN ansible-galaxy collection install community.general
+
 ENTRYPOINT []
 CMD tail -f /dev/null
