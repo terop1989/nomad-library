@@ -5,6 +5,10 @@
 
   tasks:
 
+  - name:
+    debug:
+      var: nomad_url
+
   - name: Create Job Manifest
     template:
       src:  backend-service.hcl.j2
