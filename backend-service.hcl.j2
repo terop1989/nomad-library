@@ -6,23 +6,22 @@ job "backend-{{ service_name }}" {
   group "backend" {
     count = 1
 
+    network {
+      port "http-backend-{{ service_name }}" {
+        to = 5000
+       }
+    }
+
     task "backend-task" {
       driver = "docker"
       config {
         image = "{{ service_image }}"
-      }
-
-      resources {
-        network {
-          port "http-backend" {
-            static = 5000
-          }
-        }
+        ports = ["http-backend-{{ service_name }}"]
       }
 
       service {
         name = "backend-{{ service_name }}"
-        port = "http-backend"
+        port = "http-backend-{{ service_name }}"
 
         tags = [
           "backend"
