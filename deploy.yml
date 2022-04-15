@@ -1,0 +1,19 @@
+---
+- name: Playbook start job in Nomad
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+
+  - name: Create Job Manifest
+    template:
+      src:  backend-service.hcl.j2
+      dest: backend-service.hcl
+
+  - name: Start Job
+    community.general.nomad_job:
+      host: "{{ nomad_address }}"
+      state: present
+      content: "{{ lookup('ansible.builtin.file', 'backend-service.hcl') }}"
+      timeout: 120
+      use_ssl: no
