@@ -52,9 +52,9 @@ def call(body) {
                             rm -f levant_0.3.0_linux_amd64.zip && \
                             cd /mnt && \
                             ansible-playbook deploy.yml \
-                            -e 'nomad_url= ${Nomad_URL}' \
-                            -e 'service_name=  ${pipelineParams.projectName}' \
-                            -e 'service_image= ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}'
+                            -e nomad_url= ${Nomad_URL} \
+                            -e service_name=  ${pipelineParams.projectName} \
+                            -e service_image= ${DOCKER_USER}/${pipelineParams.projectName}:${release_number}
                             """
                         }
                     }
