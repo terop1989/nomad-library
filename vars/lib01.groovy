@@ -38,7 +38,7 @@ def call(body) {
                 jenkinsAgentRunArgs = " -u 0:0 -v ${jenkinsAgentDockerfilePath}:/mnt"
 
                 def RunAgent = docker.build("${jenkinsAgentBuildName}", "${jenkinsAgentBuildArgs} -f ${jenkinsAgentDockerfileName} .")
-                Nomad_Address = '192.168.0.112'
+                Nomad_Address = credentials('NOMAD_ADDRESS')
 
                 stage('Deploy to Nomad') {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASSWORD')]) {
